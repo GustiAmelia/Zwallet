@@ -12,15 +12,24 @@ const userController ={
       formResponse.err(res,error,500)
     })
   },
-  getAllUsers : (_,res)=>{
+  getAllUsers : (req,res)=>{
     userModel
-    .getAllUsers()
+    .getAllUsers(req.query)
     .then((results)=>{
       formResponse.success(res,results,200)
     }).catch((error)=>{
       formResponse.err(res,error,500)
     })
-  }
+  },
+  updateUser: (req,res)=>{
+    userModel
+    .updateUser(req.body)
+    .then((results)=>{
+        formResponse.success(res,req.body,200);
+    }).catch((error)=>{
+        formResponse.err(res,error,500);
+    })
+  },
 }
 
 module.exports=userController;

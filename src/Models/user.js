@@ -26,10 +26,10 @@ const userModel ={
       })
     })
   },
-  getAllUsers : ()=>{
+  getAllUsers : (query)=>{
     return new Promise ((resolve,reject)=>{
-      const qs = 'SELECT * FROM users'
-      connection.query(qs,(error,results)=>{
+      const qs = 'SELECT * FROM users WHERE NOT ?'
+      connection.query(qs,[query],(error,results)=>{
         if(!error){
           resolve(results)
         }else{
@@ -37,6 +37,18 @@ const userModel ={
         }
       })
     })
+  },
+  updateUser: (body)=>{
+    return new Promise((resolve,reject)=>{
+      const queryString = `UPDATE users SET ? WHERE users.id=?`;
+      connection.query(queryString,[body, body.id],(error,results)=>{
+          if(!error){
+              resolve(results);
+          }else{
+              reject(error);
+          }
+      });
+    });
   }
 }
 

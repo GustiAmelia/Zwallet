@@ -20,6 +20,15 @@ const authControllers ={
         }).catch((error)=>{
             formResponse.err(res,error,500);
         })
+    },
+    pinConfirmation:(req,res)=>{
+        authModel
+        .pinConfirmation(req.body)
+        .then((results)=>{
+            formResponse.success(res,results,200)
+        }).catch((error)=>{
+            formResponse.err(res,error,500)
+        })
     }
 }
 
