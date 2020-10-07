@@ -11,6 +11,16 @@ const transactionController ={
     .catch((error)=>{
       formResponse.err(res,error,500)
     })
+  },
+  getAllTransaction : (req,res)=>{
+    transactionModels
+    .getAllTransaction(req.query)
+    .then((results)=>{
+      formResponse.success(res,results,200)
+    })
+    .catch((error)=>{
+      formResponse.err(res,error,500)
+    })
   }
 }
 

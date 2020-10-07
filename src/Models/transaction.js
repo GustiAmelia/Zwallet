@@ -53,6 +53,18 @@ const transactionModels ={
         
       })
     })
+  },
+  getAllTransaction :(query)=>{
+    return new Promise((resolve,reject)=>{
+      const qs = 'SELECT `transaction`.id AS transaction_id, `users`.id AS user_id,receiver_id,username, avatar,amount,date,note,category FROM users JOIN transaction ON users.id = transaction.receiver_id WHERE transaction.sender_id = ? UNION SELECT `transaction`.id AS transaction_id, users.id AS users_id, receiver_id, username,avatar, amount, date,note,category FROM users RIGHT JOIN transaction ON users.id = transaction.sender_id WHERE transaction.receiver_id = ? ORDER BY date DESC';
+      conection.query(qs,[Number(query.sender_id),Number(query.receiver_id)],(error,results)=>{
+        if(!error){
+          resolve(results)
+        } else{
+          reject(error)
+        }
+      })
+    })
   }
 }
 

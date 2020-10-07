@@ -12,9 +12,9 @@ const userController ={
       formResponse.err(res,error,500)
     })
   },
-  getAllUsers : (req,res)=>{
+  getAllUsers : (_,res)=>{
     userModel
-    .getAllUsers(req.query)
+    .getAllUsers()
     .then((results)=>{
       formResponse.success(res,results,200)
     }).catch((error)=>{
@@ -30,6 +30,16 @@ const userController ={
         formResponse.err(res,error,500);
     })
   },
+  searchContact : (req,res)=>{
+    userModel
+    .searchContact(req.query)
+    .then((results)=>{
+      formResponse.success(res,results,200);
+    })
+    .catch((error)=>{
+      formResponse.err(res,error,500);
+    })
+  }
 }
 
 module.exports=userController;

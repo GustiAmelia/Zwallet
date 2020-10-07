@@ -26,10 +26,10 @@ const userModel ={
       })
     })
   },
-  getAllUsers : (query)=>{
+  getAllUsers : ()=>{
     return new Promise ((resolve,reject)=>{
-      const qs = 'SELECT * FROM users WHERE NOT ?'
-      connection.query(qs,[query],(error,results)=>{
+      const qs = 'SELECT * FROM users ORDER BY username ASC'
+      connection.query(qs,(error,results)=>{
         if(!error){
           resolve(results)
         }else{
@@ -42,6 +42,18 @@ const userModel ={
     return new Promise((resolve,reject)=>{
       const queryString = `UPDATE users SET ? WHERE users.id=?`;
       connection.query(queryString,[body, body.id],(error,results)=>{
+          if(!error){
+              resolve(results);
+          }else{
+              reject(error);
+          }
+      });
+    });
+  },
+  searchContact : (query)=>{
+    return new Promise((resolve,reject)=>{
+      const queryString = `SELECT * FROM users WHERE users.username LIKE '%${query.username}%' ORDER BY username ASC`;
+      connection.query(queryString,(error,results)=>{
           if(!error){
               resolve(results);
           }else{
