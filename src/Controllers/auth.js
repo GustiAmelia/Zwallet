@@ -29,7 +29,26 @@ const authControllers ={
         }).catch((error)=>{
             formResponse.err(res,error,500)
         })
-    }
+    },
+    updatePassword : (req,res)=>{
+        authModel
+        .updatePassword(req.body)
+        .then((results)=>{
+          const object={id:req.body.id}
+          formResponse.success(res,object,200)
+        }).catch((error)=>{
+          formResponse.err(res,error,500)
+        })
+      },
+      checkPassword:(req,res)=>{
+        authModel
+        .checkPassword(req.body)
+        .then((results)=>{
+            formResponse.success(res,results,200)
+        }).catch((error)=>{
+            formResponse.err(res,error,500)
+        })
+    },
 }
 
 module.exports=authControllers;

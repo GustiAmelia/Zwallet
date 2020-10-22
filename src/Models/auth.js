@@ -107,7 +107,57 @@ const authModel ={
         })
       })
     })
-  }
+  },
+  updatePassword : (body)=>{
+    return new Promise((resolve,reject)=>{
+      bcrypt.genSalt(10,(error,salt)=>{
+        if(error){
+          reject(error);
+        }
+        const{password}=body;
+        bcrypt.hash(password,salt,(error,hashedPassword)=>{
+          if(error){
+            reject(error);
+          }
+          const newBody={...body,password:hashedPassword};
+          const qs =`UPDATE users SET ? WHERE users.email ='${newBody.email}'`;
+          connection.query(qs,newBody,(error,results)=>{
+            if(!error){
+              resolve(results);
+            } else{
+              reject(error);
+            }
+          })
+        })
+      })
+    })
+  },
+  checkPassword :(body)=>{
+    return new Promise((resolve,reject)=>{
+      const qs ='SELECT *  FROM users WHERE email=?'
+      connection.query(qs,body.email,(error,results)=>{
+        if(error){
+          reject({msg:'Password Invalid'})
+        }
+        if (!results.length) {
+          reject("User Not Found");
+        } 
+        else {
+          bcrypt.compare(body.password,results[0].password,(error,isSame)=>{
+          if(isSame){
+            const passwordUser = true
+            resolve({passwordUser:passwordUser})
+          }
+          if(!isSame){
+            reject({passwordUser:false})
+          }
+          if(error){
+            reject(error)
+          }
+        })}
+      })
+    })
+  },
 }
 
 module.exports=authModel;
