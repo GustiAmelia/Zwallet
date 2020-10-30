@@ -158,6 +158,48 @@ const authModel ={
       })
     })
   },
+  sendEmail: (body) => {
+    return new Promise((resolve, reject) => {
+      const otp = Math.floor(1000 + Math.random() * 900000);
+      const queryString = "SELECT email, code FROM code_otp WHERE email = ?";
+      connection.query(queryString, [body.email], (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        if (results.length) {
+          const Qs = `UPDATE code_otp SET code = ${otp} Where email = ? `;
+          connection.query(Qs, [body.email], (error, results) => {
+            if (!error) {
+              resolve({ sendOTP: "success", code: otp ,email:body.email});
+            } else {
+              reject(error);
+            }
+          });
+        } else {
+          const Qstr = `INSERT INTO code_otp SET email = ?, code= ?`;
+          connection.query(Qstr, [body.email, otp], (error, results) => {
+            if (!error) {
+              resolve({ sendOTP: "success", code: otp, email:body.email});
+            } else {
+              reject(error);
+            }
+          });
+        }
+      });
+    });
+  },
+  checkOTP: (body) => {
+    return new Promise((resolve, reject) => {
+      const queryString = `SELECT code FROM code_otp WHERE email = ?`;
+      connection.query(queryString, [body.email], (err, data) => {
+        if (!err) {
+          resolve({ code: data[0].code });
+        } else {
+          reject(err);
+        }
+      });
+    });
+  },
 }
 
 module.exports=authModel;
