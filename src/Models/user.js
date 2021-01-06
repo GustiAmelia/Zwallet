@@ -14,7 +14,7 @@ const userModel ={
             reject(error);
           }
           const newBody={...body,pin:hashedPin};
-          const qs =`UPDATE users SET ? WHERE users.username ='${newBody.username}'`;
+          const qs =`UPDATE users SET ? WHERE users.email= '${body.email}'`;
           connection.query(qs,newBody,(error,results)=>{
             if(!error){
               resolve(results);

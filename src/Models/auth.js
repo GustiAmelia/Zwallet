@@ -2,7 +2,7 @@
 const connection =require('../Configs/dbMySql');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+ 
 const authModel ={
   postNewUser : (body)=>{
     return new Promise((resolve,reject)=>{
@@ -13,7 +13,7 @@ const authModel ={
         }
         if(results.length){
           reject({
-            msg:'username already registed'
+            msg:'username already registered'
           })
         }else{
           const querySelectEmail ='SELECT * FROM users WHERE email=?';
@@ -23,7 +23,7 @@ const authModel ={
             }
             if(results.length){
               reject({
-                msg:'Email already registed'
+                msg:'Email already registered'
               });
             }else{
               bcrypt.genSalt(10,(error,salt)=>{

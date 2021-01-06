@@ -40,7 +40,7 @@ const uploadImage ={
                 })
             }else{
                 try {
-                    req.body.avatar=`http://localhost:${process.env.PORT}/images/${req.file.filename}`
+                    req.body.avatar=`/images/${req.file.filename}`
                 } catch {
                     console.log(error)
                 } finally {
